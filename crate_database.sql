@@ -1,0 +1,46 @@
+CREATE TABLE Users (
+    User_Code SERIAL PRIMARY KEY,
+    Name VARCHAR(100),
+    Email VARCHAR(100),
+    Password VARCHAR(100),
+    Contact_Details VARCHAR(100)
+);
+
+CREATE TABLE Product_Type (
+    Type_Code SERIAL PRIMARY KEY,
+    Name VARCHAR(100)
+);
+
+CREATE TABLE Product (
+    Product_Code SERIAL PRIMARY KEY,
+    Name VARCHAR(100),
+    Description TEXT,
+    Starting_Price DECIMAL(10, 2),
+    Start_Time TIMESTAMP,
+    End_Time TIMESTAMP,
+    Seller_Code INTEGER REFERENCES Users(User_Code) ON DELETE CASCADE ON UPDATE CASCADE,
+    Type_Code INTEGER REFERENCES Product_Type(Type_Code) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE Bid (
+    Bid_Code SERIAL PRIMARY KEY,
+    Product_Code INTEGER REFERENCES Product(Product_Code) ON DELETE CASCADE ON UPDATE CASCADE,
+    User_Code INTEGER REFERENCES Users(User_Code) ON DELETE CASCADE ON UPDATE CASCADE,
+    Bid_Amount DECIMAL(10, 2),
+    Bid_Time TIMESTAMP
+);
+
+CREATE TABLE Transaction (
+    Transaction_Code SERIAL PRIMARY KEY,
+    Product_Code INTEGER REFERENCES Product(Product_Code) ON DELETE CASCADE ON UPDATE CASCADE,
+    Seller_Code INTEGER REFERENCES Users(User_Code) ON DELETE CASCADE ON UPDATE CASCADE,
+    Buyer_Code INTEGER REFERENCES Users(User_Code) ON DELETE CASCADE ON UPDATE CASCADE,
+    Final_Price DECIMAL(10, 2),
+    Transaction_Date TIMESTAMP
+);
+
+CREATE TABLE Photo (
+    Photo_Code SERIAL PRIMARY KEY,
+    Product_Code INTEGER REFERENCES Product(Product_Code) ON DELETE CASCADE ON UPDATE CASCADE,
+    Photo_URL TEXT
+);
